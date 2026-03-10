@@ -20,24 +20,6 @@ const options = {
         ],
         paths: {
             "/api/profiles": {
-                get: {
-                    summary: "Get all profiles",
-                    tags: ["Profiles"],
-                    responses: {
-                        "200": {
-                            description: "List of profiles",
-                            content: {
-                                "application/json": {
-                                    schema: {
-                                        type: "array",
-                                        items: { $ref: "#/components/schemas/Profile" },
-                                    },
-                                },
-                            },
-                        },
-                        "500": { description: "Server error" },
-                    },
-                },
                 post: {
                     summary: "Create a new profile",
                     tags: ["Profiles"],
@@ -45,39 +27,75 @@ const options = {
                         required: true,
                         content: {
                             "application/json": {
-                                schema: { $ref: "#/components/schemas/Profile" },
+                                schema: {
+                                    $ref: "#/components/schemas/Profile",
+                                },
                             },
                         },
                     },
                     responses: {
-                        "201": { description: "Profile created successfully" },
-                        "500": { description: "Server error" },
+                        "201": {
+                            description: "Profile created successfully",
+                        },
+                        "500": {
+                            description: "Server error",
+                        },
+                    },
+                },
+                get: {
+                    summary: "Get all profiles",
+                    tags: ["Profiles"],
+                    responses: {
+                        "200": {
+                            description: "List of all profiles",
+                            content: {
+                                "application/json": {
+                                    schema: {
+                                        type: "array",
+                                        items: {
+                                            $ref: "#/components/schemas/Profile",
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                        "500": {
+                            description: "Server error",
+                        },
                     },
                 },
             },
             "/api/profiles/{id}": {
                 put: {
-                    summary: "Update a profile by ID",
+                    summary: "Update an existing profile",
                     tags: ["Profiles"],
                     parameters: [
                         {
                             name: "id",
                             in: "path",
                             required: true,
-                            schema: { type: "integer" },
+                            schema: {
+                                type: "integer",
+                            },
                         },
                     ],
                     requestBody: {
                         required: true,
                         content: {
                             "application/json": {
-                                schema: { $ref: "#/components/schemas/Profile" },
+                                schema: {
+                                    $ref: "#/components/schemas/Profile",
+                                },
                             },
                         },
                     },
                     responses: {
-                        "200": { description: "Profile updated successfully" },
-                        "404": { description: "Profile not found" },
+                        "200": {
+                            description: "Profile updated successfully",
+                        },
+                        "404": {
+                            description: "Profile not found",
+                        },
                     },
                 },
                 delete: {
@@ -88,12 +106,21 @@ const options = {
                             name: "id",
                             in: "path",
                             required: true,
-                            schema: { type: "integer" },
+                            schema: {
+                                type: "integer",
+                            },
                         },
                     ],
                     responses: {
-                        "200": { description: "Profile deleted successfully" },
-                        "404": { description: "Profile not found" },
+                        "200": {
+                            description: "Profile deleted successfully",
+                        },
+                        "404": {
+                            description: "Profile not found",
+                        },
+                        "500": {
+                            description: "Server error",
+                        },
                     },
                 },
             },
@@ -103,36 +130,71 @@ const options = {
                 Profile: {
                     type: "object",
                     properties: {
-                        id: { type: "integer", example: 1 },
-                        name: { type: "string", example: "John Doe" },
-                        bio: { type: "string", example: "Backend developer" },
-                        location: { type: "string", example: "London" },
-                        nationality: { type: "string", example: "British" },
-                        availability: { type: "string", example: "Immediately" },
+                        name: {
+                            type: "string",
+                        },
+                        bio: {
+                            type: "string",
+                        },
+                        location: {
+                            type: "string",
+                        },
+                        nationality: {
+                            type: "string",
+                        },
+                        availability: {
+                            type: "string",
+                        },
                         dateOfBirth: {
                             type: "string",
                             format: "date",
-                            example: "1995-05-10",
                         },
                         email: {
                             type: "string",
                             format: "email",
-                            example: "john@example.com",
                         },
-                        phone: { type: "string", example: "+447123456789" },
-                        address: { type: "string" },
-                        github: { type: "string" },
-                        twitter: { type: "string" },
-                        linkedin: { type: "string" },
-                        expectedSalary: { type: "number", example: 60000 },
-                        ownACar: { type: "boolean", example: true },
-                        haveDrivingLicense: { type: "boolean", example: true },
-                        noticePeriod: { type: "string", example: "1 month" },
-                        immigrationStatus: { type: "string" },
-                        referees: { type: "string" },
-                        willingToRelocate: { type: "boolean", example: true },
-                        languages: { type: "string" },
-                        skills: { type: "string" },
+                        phone: {
+                            type: "string",
+                        },
+                        address: {
+                            type: "string",
+                        },
+                        github: {
+                            type: "string",
+                        },
+                        twitter: {
+                            type: "string",
+                        },
+                        linkedin: {
+                            type: "string",
+                        },
+                        expectedSalary: {
+                            type: "number",
+                        },
+                        ownACar: {
+                            type: "boolean",
+                        },
+                        haveDrivingLicense: {
+                            type: "boolean",
+                        },
+                        noticePeriod: {
+                            type: "string",
+                        },
+                        immigrationStatus: {
+                            type: "string",
+                        },
+                        referees: {
+                            type: "string",
+                        },
+                        willingToRelocate: {
+                            type: "boolean",
+                        },
+                        languages: {
+                            type: "string",
+                        },
+                        skills: {
+                            type: "string",
+                        },
                     },
                     required: ["name", "email"],
                 },

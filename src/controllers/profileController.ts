@@ -1,3 +1,5 @@
+//profileController.ts
+
 import { Request, Response } from "express";
 import Profile from "../models/Profile";
 
@@ -10,9 +12,9 @@ export const createProfile = async (
     const profile = await Profile.create(req.body);
     res.status(201).json(profile);
   } catch (error) {
-    res.status(500).json({
-      error: error instanceof Error ? error.message : error,
-    });
+    res
+      .status(500)
+      .json({ error: error instanceof Error ? error.message : error });
   }
 };
 
@@ -37,9 +39,9 @@ export const updateProfile = async (
     await profile.update(req.body);
     res.status(200).json(profile);
   } catch (error) {
-    res.status(500).json({
-      error: error instanceof Error ? error.message : error,
-    });
+    res
+      .status(500)
+      .json({ error: error instanceof Error ? error.message : error });
   }
 };
 
@@ -52,9 +54,9 @@ export const getProfiles = async (
     const profiles = await Profile.findAll();
     res.status(200).json(profiles);
   } catch (error) {
-    res.status(500).json({
-      error: error instanceof Error ? error.message : error,
-    });
+    res
+      .status(500)
+      .json({ error: error instanceof Error ? error.message : error });
   }
 };
 
@@ -73,8 +75,8 @@ export const deleteProfile = async (
     await profile.destroy();
     res.status(200).json({ message: "Profile deleted successfully" });
   } catch (error) {
-    res.status(500).json({
-      error: error instanceof Error ? error.message : error,
-    });
+    res
+      .status(500)
+      .json({ error: error instanceof Error ? error.message : error });
   }
 };
