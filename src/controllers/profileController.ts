@@ -1,4 +1,3 @@
-// src/controllers/profileController.ts
 import { Request, Response } from "express";
 import Profile from "../models/Profile";
 
@@ -23,14 +22,13 @@ export const updateProfile = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-
+    const id = Number(req.params.id);
     if (!id) {
       res.status(400).json({ message: "ID parameter is required" });
       return;
     }
 
-    const profile = await Profile.findByPk(Number(id));
+    const profile = await Profile.findByPk(id);
     if (!profile) {
       res.status(404).json({ message: "Profile not found" });
       return;
@@ -39,8 +37,44 @@ export const updateProfile = async (
     await profile.update(req.body);
     res.status(200).json(profile);
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: error instanceof Error ? error.message : error });
+    res.status(500).json({
+      error: error instanceof Error ? error.message : error,
+    });
+  }
+};
+
+// Get all profiles
+export const getProfiles = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const profiles = await Profile.findAll();
+    res.status(200).json(profiles);
+  } catch (error) {
+    res.status(500).json({
+      error: error instanceof Error ? error.message : error,
+    });
+  }
+};
+
+// Delete profile by ID
+export const deleteProfile = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const id = Number(req.params.id);
+    const profile = await Profile.findByPk(id);
+    if (!profile) {
+      res.status(404).json({ message: "Profile not found" });
+      return;
+    }
+    await profile.destroy();
+    res.status(200).json({ message: "Profile deleted successfully" });
+  } catch (error) {
+    res.status(500).json({
+      error: error instanceof Error ? error.message : error,
+    });
   }
 };

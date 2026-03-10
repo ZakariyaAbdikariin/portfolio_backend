@@ -14,9 +14,26 @@ const options: Options = {
         description: "Local development server",
       },
     ],
-
     paths: {
       "/api/profiles": {
+        get: {
+          summary: "Get all profiles",
+          tags: ["Profiles"],
+          responses: {
+            "200": {
+              description: "List of profiles",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "array",
+                    items: { $ref: "#/components/schemas/Profile" },
+                  },
+                },
+              },
+            },
+            "500": { description: "Server error" },
+          },
+        },
         post: {
           summary: "Create a new profile",
           tags: ["Profiles"],
@@ -24,59 +41,60 @@ const options: Options = {
             required: true,
             content: {
               "application/json": {
-                schema: {
-                  $ref: "#/components/schemas/Profile",
-                },
+                schema: { $ref: "#/components/schemas/Profile" },
               },
             },
           },
           responses: {
-            "201": {
-              description: "Profile created successfully",
-            },
-            "500": {
-              description: "Server error",
-            },
+            "201": { description: "Profile created successfully" },
+            "500": { description: "Server error" },
           },
         },
       },
 
       "/api/profiles/{id}": {
         put: {
-          summary: "Update an existing profile",
+          summary: "Update a profile by ID",
           tags: ["Profiles"],
           parameters: [
             {
               name: "id",
               in: "path",
               required: true,
-              schema: {
-                type: "integer",
-              },
+              schema: { type: "integer" },
             },
           ],
           requestBody: {
             required: true,
             content: {
               "application/json": {
-                schema: {
-                  $ref: "#/components/schemas/Profile",
-                },
+                schema: { $ref: "#/components/schemas/Profile" },
               },
             },
           },
           responses: {
-            "200": {
-              description: "Profile updated successfully",
+            "200": { description: "Profile updated successfully" },
+            "404": { description: "Profile not found" },
+          },
+        },
+        delete: {
+          summary: "Delete a profile by ID",
+          tags: ["Profiles"],
+          parameters: [
+            {
+              name: "id",
+              in: "path",
+              required: true,
+              schema: { type: "integer" },
             },
-            "404": {
-              description: "Profile not found",
-            },
+          ],
+          responses: {
+            "200": { description: "Profile deleted successfully" },
+            "404": { description: "Profile not found" },
           },
         },
       },
     },
-
     components: {
       schemas: {
         Profile: {
@@ -118,7 +136,6 @@ const options: Options = {
       },
     },
   },
-
   apis: [],
 };
 
