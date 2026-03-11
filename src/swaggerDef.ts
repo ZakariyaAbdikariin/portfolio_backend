@@ -1,3 +1,4 @@
+// swaggerDef.ts (updated)
 import swaggerJSDoc, { Options } from "swagger-jsdoc";
 
 const options: Options = {
@@ -39,7 +40,6 @@ const options: Options = {
             },
           },
         },
-
         get: {
           summary: "Get all profiles",
           tags: ["Profiles"],
@@ -50,21 +50,42 @@ const options: Options = {
                 "application/json": {
                   schema: {
                     type: "array",
-                    items: {
-                      $ref: "#/components/schemas/Profile",
-                    },
+                    items: { $ref: "#/components/schemas/Profile" },
                   },
                 },
               },
             },
-            "500": {
-              description: "Server error",
-            },
+            "500": { description: "Server error" },
           },
         },
       },
 
       "/api/profiles/{id}": {
+        get: {
+          summary: "Get a profile by ID",
+          tags: ["Profiles"],
+          parameters: [
+            {
+              name: "id",
+              in: "path",
+              required: true,
+              schema: { type: "integer" },
+            },
+          ],
+          responses: {
+            "200": {
+              description: "Profile retrieved successfully",
+              content: {
+                "application/json": {
+                  schema: { $ref: "#/components/schemas/Profile" },
+                },
+              },
+            },
+            "404": { description: "Profile not found" },
+            "500": { description: "Server error" },
+          },
+        },
+
         put: {
           summary: "Update an existing profile",
           tags: ["Profiles"],
@@ -73,28 +94,20 @@ const options: Options = {
               name: "id",
               in: "path",
               required: true,
-              schema: {
-                type: "integer",
-              },
+              schema: { type: "integer" },
             },
           ],
           requestBody: {
             required: true,
             content: {
               "application/json": {
-                schema: {
-                  $ref: "#/components/schemas/Profile",
-                },
+                schema: { $ref: "#/components/schemas/Profile" },
               },
             },
           },
           responses: {
-            "200": {
-              description: "Profile updated successfully",
-            },
-            "404": {
-              description: "Profile not found",
-            },
+            "200": { description: "Profile updated successfully" },
+            "404": { description: "Profile not found" },
           },
         },
 
@@ -106,21 +119,13 @@ const options: Options = {
               name: "id",
               in: "path",
               required: true,
-              schema: {
-                type: "integer",
-              },
+              schema: { type: "integer" },
             },
           ],
           responses: {
-            "200": {
-              description: "Profile deleted successfully",
-            },
-            "404": {
-              description: "Profile not found",
-            },
-            "500": {
-              description: "Server error",
-            },
+            "200": { description: "Profile deleted successfully" },
+            "404": { description: "Profile not found" },
+            "500": { description: "Server error" },
           },
         },
       },
@@ -131,78 +136,33 @@ const options: Options = {
         Profile: {
           type: "object",
           properties: {
-            name: {
-              type: "string",
-            },
-            bio: {
-              type: "string",
-            },
-            location: {
-              type: "string",
-            },
-            nationality: {
-              type: "string",
-            },
-            availability: {
-              type: "string",
-            },
-            dateOfBirth: {
-              type: "string",
-              format: "date",
-            },
-            email: {
-              type: "string",
-              format: "email",
-            },
-            phone: {
-              type: "string",
-            },
-            address: {
-              type: "string",
-            },
-            github: {
-              type: "string",
-            },
-            twitter: {
-              type: "string",
-            },
-            linkedin: {
-              type: "string",
-            },
-            expectedSalary: {
-              type: "number",
-            },
-            ownACar: {
-              type: "boolean",
-            },
-            haveDrivingLicense: {
-              type: "boolean",
-            },
-            noticePeriod: {
-              type: "string",
-            },
-            immigrationStatus: {
-              type: "string",
-            },
-            referees: {
-              type: "string",
-            },
-            willingToRelocate: {
-              type: "boolean",
-            },
-            languages: {
-              type: "string",
-            },
-            skills: {
-              type: "string",
-            },
+            name: { type: "string" },
+            bio: { type: "string" },
+            location: { type: "string" },
+            nationality: { type: "string" },
+            availability: { type: "string" },
+            dateOfBirth: { type: "string", format: "date" },
+            email: { type: "string", format: "email" },
+            phone: { type: "string" },
+            address: { type: "string" },
+            github: { type: "string" },
+            twitter: { type: "string" },
+            linkedin: { type: "string" },
+            expectedSalary: { type: "number" },
+            ownACar: { type: "boolean" },
+            haveDrivingLicense: { type: "boolean" },
+            noticePeriod: { type: "string" },
+            immigrationStatus: { type: "string" },
+            referees: { type: "string" },
+            willingToRelocate: { type: "boolean" },
+            languages: { type: "string" },
+            skills: { type: "string" },
           },
           required: ["name", "email"],
         },
       },
     },
   },
-
   apis: [],
 };
 

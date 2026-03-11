@@ -1,4 +1,5 @@
 "use strict";
+//profileRoutes.ts
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const profileController_1 = require("../controllers/profileController");
@@ -11,4 +12,6 @@ router.get("/", profileController_1.getProfiles);
 router.put("/:id", profileController_1.updateProfile);
 // Delete a profile by ID
 router.delete("/:id", profileController_1.deleteProfile);
+// Get a profile by ID
+router.get("/:id", profileController_1.getProfileById);
 exports.default = router;

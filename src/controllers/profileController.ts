@@ -80,3 +80,31 @@ export const deleteProfile = async (
       .json({ error: error instanceof Error ? error.message : error });
   }
 };
+
+// Get profile by ID
+export const getProfileById = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const id = Number(req.params.id);
+
+    if (!id) {
+      res.status(400).json({ message: "ID parameter is required" });
+      return;
+    }
+
+    const profile = await Profile.findByPk(id);
+
+    if (!profile) {
+      res.status(404).json({ message: "Profile not found" });
+      return;
+    }
+
+    res.status(200).json(profile);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: error instanceof Error ? error.message : error });
+  }
+};
