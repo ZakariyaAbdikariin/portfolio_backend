@@ -13,11 +13,21 @@ const swaggerDef_1 = __importDefault(require("./swaggerDef"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 // Middleware
-app.use((0, cors_1.default)()); // Enable CORS so frontend (localhost:3000) can access API
+app.use((0, cors_1.default)());
 app.use(express_1.default.json());
+// API root route
+app.get("/api", (req, res) => {
+    res.json({
+        message: "API is running 🚀",
+        endpoints: {
+            profiles: "/api/profiles",
+            docs: "/api-docs"
+        }
+    });
+});
 // Routes
 app.use("/api/profiles", profileRoutes_1.default);
-// Test route
+// Root route
 app.get("/", (req, res) => {
     res.send("Portfolio API is running");
 });

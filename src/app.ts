@@ -1,4 +1,4 @@
-import express, { Application } from "express";
+import express, { Application, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import profileRoutes from "./routes/profileRoutes";
@@ -11,14 +11,25 @@ dotenv.config();
 const app: Application = express();
 
 // Middleware
-app.use(cors()); // Enable CORS so frontend (localhost:3000) can access API
+app.use(cors());
 app.use(express.json());
+
+// API root route
+app.get("/api", (req: Request, res: Response) => {
+  res.json({
+    message: "API is running 🚀",
+    endpoints: {
+      profiles: "/api/profiles",
+      docs: "/api-docs"
+    }
+  });
+});
 
 // Routes
 app.use("/api/profiles", profileRoutes);
 
-// Test route
-app.get("/", (req, res) => {
+// Root route
+app.get("/", (req: Request, res: Response) => {
   res.send("Portfolio API is running");
 });
 
