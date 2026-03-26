@@ -13,21 +13,30 @@ const swaggerDef_1 = __importDefault(require("./swaggerDef"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 // Middleware
-app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-// API root route
+// Enable CORS for both local dev and production frontend
+const allowedOrigins = [
+    "https://sakariyeabdikariin.co.uk", // production
+    "http://localhost:3000", // local dev
+];
+app.use((0, cors_1.default)({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+}));
+// Root API route
 app.get("/api", (req, res) => {
     res.json({
         message: "API is running 🚀",
         endpoints: {
             profiles: "/api/profiles",
-            docs: "/api-docs"
-        }
+            docs: "/api-docs",
+        },
     });
 });
-// Routes
+// Mount profile routes under /api/profiles
 app.use("/api/profiles", profileRoutes_1.default);
-// Root route
+// Root route for testing
 app.get("/", (req, res) => {
     res.send("Portfolio API is running");
 });

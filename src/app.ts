@@ -1,5 +1,3 @@
-// src/app.ts
-
 import express, { Application, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -15,12 +13,19 @@ const app: Application = express();
 // Middleware
 app.use(express.json());
 
-// Enable CORS only for your frontend
-app.use(cors({
-  origin: "https://sakariyeabdikariin.co.uk", // your frontend domain
-  methods: ["GET","POST","PUT","DELETE"],
-  credentials: true
-}));
+// Enable CORS for both local dev and production frontend
+const allowedOrigins = [
+  "https://sakariyeabdikariin.co.uk", // production
+  "http://localhost:3000", // local dev
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  }),
+);
 
 // Root API route
 app.get("/api", (req: Request, res: Response) => {
@@ -28,8 +33,8 @@ app.get("/api", (req: Request, res: Response) => {
     message: "API is running 🚀",
     endpoints: {
       profiles: "/api/profiles",
-      docs: "/api-docs"
-    }
+      docs: "/api-docs",
+    },
   });
 });
 

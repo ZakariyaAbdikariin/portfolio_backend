@@ -13,95 +13,85 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProfileById = exports.deleteProfile = exports.getProfiles = exports.updateProfile = exports.createProfile = void 0;
-const Profile_1 = __importDefault(require("../models/Profile"));
-// Create a new profile
-const createProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const profile = yield Profile_1.default.create(req.body);
-        res.status(201).json(profile);
-    }
-    catch (error) {
-        res
-            .status(500)
-            .json({ error: error instanceof Error ? error.message : error });
-    }
-});
-exports.createProfile = createProfile;
-// Update an existing profile
-const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const id = Number(req.params.id);
-        if (!id) {
-            res.status(400).json({ message: "ID parameter is required" });
-            return;
-        }
-        const profile = yield Profile_1.default.findByPk(id);
-        if (!profile) {
-            res.status(404).json({ message: "Profile not found" });
-            return;
-        }
-        yield profile.update(req.body);
-        res.status(200).json(profile);
-    }
-    catch (error) {
-        res
-            .status(500)
-            .json({ error: error instanceof Error ? error.message : error });
-    }
-});
-exports.updateProfile = updateProfile;
+exports.deleteProfile = exports.updateProfile = exports.createProfile = exports.getProfileById = exports.getProfiles = void 0;
+const Profile_1 = __importDefault(require("../models/Profile")); // default import
 // Get all profiles
 const getProfiles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const profiles = yield Profile_1.default.findAll();
-        res.status(200).json(profiles);
+        res.json(profiles);
     }
     catch (error) {
-        res
-            .status(500)
-            .json({ error: error instanceof Error ? error.message : error });
+        console.error("Error fetching profiles:", error);
+        res.status(500).json({ message: "Internal server error" });
     }
 });
 exports.getProfiles = getProfiles;
-// Delete profile by ID
-const deleteProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const id = Number(req.params.id);
-        const profile = yield Profile_1.default.findByPk(id);
-        if (!profile) {
-            res.status(404).json({ message: "Profile not found" });
-            return;
-        }
-        yield profile.destroy();
-        res.status(200).json({ message: "Profile deleted successfully" });
-    }
-    catch (error) {
-        res
-            .status(500)
-            .json({ error: error instanceof Error ? error.message : error });
-    }
-});
-exports.deleteProfile = deleteProfile;
-// Get profile by ID
+// Get a profile by ID
 const getProfileById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const id = Number(req.params.id);
-        if (!id) {
-            res.status(400).json({ message: "ID parameter is required" });
-            return;
-        }
+        const id = Number(req.params.id); // ✅ convert to number
+        if (isNaN(id))
+            return res.status(400).json({ message: "Invalid ID" });
         const profile = yield Profile_1.default.findByPk(id);
         if (!profile) {
-            res.status(404).json({ message: "Profile not found" });
-            return;
+            return res.status(404).json({ message: "Profile not found" });
         }
-        res.status(200).json(profile);
+        res.json(profile);
     }
     catch (error) {
-        res
-            .status(500)
-            .json({ error: error instanceof Error ? error.message : error });
+        console.error("Error fetching profile:", error);
+        res.status(500).json({ message: "Internal server error" });
     }
 });
 exports.getProfileById = getProfileById;
+// Create a new profile
+const createProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const newProfile = yield Profile_1.default.create(req.body);
+        res.status(201).json(newProfile);
+    }
+    catch (error) {
+        console.error("Error creating profile:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+exports.createProfile = createProfile;
+// Update an existing profile by ID
+const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = Number(req.params.id); // ✅ convert to number
+        if (isNaN(id))
+            return res.status(400).json({ message: "Invalid ID" });
+        const profile = yield Profile_1.default.findByPk(id);
+        if (!profile) {
+            return res.status(404).json({ message: "Profile not found" });
+        }
+        yield profile.update(req.body);
+        res.json(profile);
+    }
+    catch (error) {
+        console.error("Error updating profile:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+exports.updateProfile = updateProfile;
+// Delete a profile by ID
+const deleteProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = Number(req.params.id); // ✅ convert to number
+        if (isNaN(id))
+            return res.status(400).json({ message: "Invalid ID" });
+        const profile = yield Profile_1.default.findByPk(id);
+        if (!profile) {
+            return res.status(404).json({ message: "Profile not found" });
+        }
+        yield profile.destroy();
+        res.json({ message: "Profile deleted successfully" });
+    }
+    catch (error) {
+        console.error("Error deleting profile:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+exports.deleteProfile = deleteProfile;
